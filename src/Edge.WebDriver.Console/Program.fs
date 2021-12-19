@@ -13,10 +13,10 @@ let options =
 
 let driver =
   edge options {
-    navigate "https://www.google.com/"
-    get_elements_by_class_name "gLFyf" into elements
+    navigate "https://www.bing.com/"
+    get_element_by_id "sb_form_q" into e
 
-    element (elements |> first) {
+    element e {
       input "test"
       submit
     } |> ignore
@@ -31,6 +31,18 @@ let driver =
   }
 
 
+//let driver_dir = @"C:\tools\driver"
+//edge'with options driver_dir {
+//  navigate "https://www.bing.com/"
+//  get_element_by_id "sb_form_q" into elem
+//  element elem {
+//    input "test"
+//    submit
+//  } |> ignore
+//  page_source into html
+//  printfn $"%s{html}"
+//}
+//|> ignore
 
 //let driver =
 //  edge options {
