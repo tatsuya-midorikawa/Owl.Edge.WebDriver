@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>0.0.1</Version>
+    <Authors>midoliy</Authors>
+    <Company>midoliy</Company>
+    <Copyright>© 2021 Tatsuya Midorikawa. All rights rserved</Copyright>
+    <Description>Microsoft Edge manipulate library for F#.</Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>msedge.png</PackageIcon>
+    <RepositoryUrl>https://github.com/tatsuya-midorikawa/Edge.WebDriver</RepositoryUrl>
+    <PackageTags>fsharp,edge,webdriver,automation</PackageTags>
+    <PackageId>Owl.$(AssemblyName)</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>5</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>5</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="EdgeTools.fs" />
+    <Compile Include="Edge.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\msedge.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
+  </ItemGroup>
+
+</Project>
