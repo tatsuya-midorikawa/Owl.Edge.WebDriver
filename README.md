@@ -1,4 +1,4 @@
-![img](https://raw.githubusercontent.com/tatsuya-midorikawa/Edge.WebDriver/main/assets/msedge.png)  
+![img](https://raw.githubusercontent.com/tatsuya-midorikawa/Edge.WebDriver/main/assets/msedge-x128.png)  
 
 # Owl.Edge.WebDriver  
 Microsoft Edge manipulate library for F#.  
