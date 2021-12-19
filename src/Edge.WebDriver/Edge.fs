@@ -121,6 +121,7 @@ module Edge =
       | (None, Some url) -> new EdgeDriver(options, Url= url)
       | (None, None) -> new EdgeDriver(options)
     let navigator = driver.Navigate()
+
     member __.Yield(_) = driver
     member __.For(e, f) = f e
     member __.Zero() = driver
@@ -182,6 +183,25 @@ module Edge =
     /// </summary>
     [<CustomOperation("page_source", AllowIntoPattern=true)>]
     member __.GetPageSource (driver: EdgeDriver) = driver.PageSource
+
+    /// <summary>
+    /// Executes JavaScript in the context of the currently selected frame or window.
+    /// </summary>
+    [<CustomOperation("execute", AllowIntoPattern=true)>]
+    member __.Execute (driver: EdgeDriver, script: string, [<ParamArray>] arguments: string[]) = driver.ExecuteScript(script, arguments)
+
+    /// <summary>
+    /// Executes JavaScript in the context of the currently selected frame or window.
+    /// </summary>
+    [<CustomOperation("execute", AllowIntoPattern=true)>]
+    member __.Execute (driver: EdgeDriver, script: PinnedScript, arguments: string[]) = driver.ExecuteScript(script, arguments)
+
+    /// <summary>
+    /// Executes JavaScript "asynchronously" in the context of the currently selected frame or window,
+    /// executing the callback function specified as the last argument in the list of arguments.
+    /// </summary>
+    [<CustomOperation("execute_async", AllowIntoPattern=true)>]
+    member __.ExecuteAsync (driver: EdgeDriver, script: string, [<ParamArray>] arguments: string[]) = driver.ExecuteAsyncScript(script, arguments)
 
     member private __.Test (driver: EdgeDriver, id: string) = 
       driver.Quit()
