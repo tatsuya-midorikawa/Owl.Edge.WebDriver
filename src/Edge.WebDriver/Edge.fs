@@ -17,7 +17,7 @@ open OpenQA.Selenium.Edge
 [<AutoOpen>]
 module Edge =
 
-  let private stable = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Beta\Application\msedge.exe")
+  let private stable = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge\Application\msedge.exe")
   let private beta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Beta\Application\msedge.exe")
   let private dev = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Dev\Application\msedge.exe")
   let private canary = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Edge SxS\Application\msedge.exe")
