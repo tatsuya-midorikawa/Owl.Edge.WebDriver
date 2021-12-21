@@ -13,7 +13,10 @@ let options =
 
 let driver =
   edge options {
+
     navigate "https://www.bing.com/"
+
+    execute "alert(arguments[0])" "sample text" into result
     get_element_by_id "sb_form_q" into e
 
     element e {
