@@ -1,4 +1,4 @@
-﻿namespace Edge.WebDriver
+﻿namespace Owl.Edge.WebDriver
 
 open System.Linq
 open OpenQA.Selenium

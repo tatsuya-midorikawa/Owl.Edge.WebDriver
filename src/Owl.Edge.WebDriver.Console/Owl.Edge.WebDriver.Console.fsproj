@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Edge.WebDriver\Edge.WebDriver.fsproj" />
+    <ProjectReference Include="..\Owl.Edge.WebDriver\Owl.Edge.WebDriver.fsproj" />
   </ItemGroup>
 
 </Project>

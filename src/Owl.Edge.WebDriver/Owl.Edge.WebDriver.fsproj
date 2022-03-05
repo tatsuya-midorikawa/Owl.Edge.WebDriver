@@ -11,7 +11,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>msedge.png</PackageIcon>
-    <RepositoryUrl>https://github.com/tatsuya-midorikawa/Edge.WebDriver</RepositoryUrl>
+    <RepositoryUrl>https://github.com/tatsuya-midorikawa/Owl.Edge.WebDriver</RepositoryUrl>
     <PackageTags>fsharp,edge,webdriver,automation</PackageTags>
     <PackageId>Owl.$(AssemblyName)</PackageId>
   </PropertyGroup>

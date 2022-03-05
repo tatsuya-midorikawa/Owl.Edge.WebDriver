@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32002.185
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Edge.WebDriver", "Edge.WebDriver\Edge.WebDriver.fsproj", "{E99E207A-04CA-4073-ACC7-53DE0CFAD5FE}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Owl.Edge.WebDriver", "Owl.Edge.WebDriver\Owl.Edge.WebDriver.fsproj", "{E99E207A-04CA-4073-ACC7-53DE0CFAD5FE}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Edge.WebDriver.Console", "Edge.WebDriver.Console\Edge.WebDriver.Console.fsproj", "{2CD43202-815D-49F2-A2E5-445C5F9256F8}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Owl.Edge.WebDriver.Console", "Owl.Edge.WebDriver.Console\Owl.Edge.WebDriver.Console.fsproj", "{2CD43202-815D-49F2-A2E5-445C5F9256F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

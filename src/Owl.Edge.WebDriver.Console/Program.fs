@@ -1,6 +1,6 @@
 ﻿//open OpenQA.Selenium
 
-open Edge.WebDriver
+open Owl.Edge.WebDriver
 
 // 既定では Stable チャネルを使います.
 let options =

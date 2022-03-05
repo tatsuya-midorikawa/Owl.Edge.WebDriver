@@ -7,7 +7,7 @@
 // ▼ Selenuium | GitHub
 // https://github.com/SeleniumHQ/selenium/tree/trunk/dotnet/src/webdriver
 
-namespace Edge.WebDriver
+namespace Owl.Edge.WebDriver
 
 open System
 open System.IO
