@@ -48,7 +48,6 @@ module Trunk =
       | (Platform.Mac, _) -> get_mac_driver_url version
       | (Platform.Linux, _) -> get_linux_driver_url version
       | _ -> raise (exn $"{Environment.OSVersion.Platform} is not supported.")
-    ()
     use request = new HttpRequestMessage(HttpMethod.Get, Uri url)
     task {
       use! response = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead)
