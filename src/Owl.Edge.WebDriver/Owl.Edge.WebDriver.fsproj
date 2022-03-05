@@ -25,6 +25,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Trunk.fs" />
     <Compile Include="EdgeTools.fs" />
     <Compile Include="Edge.fs" />
   </ItemGroup>

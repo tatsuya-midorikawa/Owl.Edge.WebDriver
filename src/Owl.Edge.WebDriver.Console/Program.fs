@@ -2,36 +2,43 @@
 
 open Owl.Edge.WebDriver
 
-// 既定では Stable チャネルを使います.
-let options =
-  options {
-    // Beta チャネルを使う
-    use_beta
-    // app-mode を使う
-    use_app_mode "https://www.microsoft.com"
-  }
 
-let driver =
-  edge options {
+let task = Trunk.download "99.0.1150.30"
+System.Threading.Tasks.Task.WaitAll task
+printfn "done"
 
-    navigate "https://www.bing.com/"
 
-    execute "alert(arguments[0])" "sample text" into result
-    get_element_by_id "sb_form_q" into e
 
-    element e {
-      input "test"
-      submit
-    } |> ignore
+//// 既定では Stable チャネルを使います.
+//let options =
+//  options {
+//    // Beta チャネルを使う
+//    use_beta
+//    // app-mode を使う
+//    use_app_mode "https://www.microsoft.com"
+//  }
 
-    page_source into html
-    printfn $"%s{html}"
+//let driver =
+//  edge options {
 
-    //try'element (elements |> try'first) {
-    //  input "test"
-    //  submit
-    //}
-  }
+//    navigate "https://www.bing.com/"
+
+//    execute "alert(arguments[0])" "sample text" into result
+//    get_element_by_id "sb_form_q" into e
+
+//    element e {
+//      input "test"
+//      submit
+//    } |> ignore
+
+//    page_source into html
+//    printfn $"%s{html}"
+
+//    //try'element (elements |> try'first) {
+//    //  input "test"
+//    //  submit
+//    //}
+//  }
 
 
 //let driver_dir = @"C:\tools\driver"
