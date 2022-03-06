@@ -5,12 +5,21 @@ open System.Runtime
 open System.Net
 open System.Net.Http
 open System.IO
+open System.Diagnostics
 
 module Trunk =
   let client = new HttpClient()
 
   type Platform = None = -1 | Windows = 0 | Mac = 1 | Linux = 2
   type Architecture = None = -1 | x86 = 0 | x64 = 1 | ARM = 2
+
+  let stable = FileInfo <| Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge\Application\msedge.exe")
+  let beta = FileInfo <| Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Beta\Application\msedge.exe")
+  let dev = FileInfo <| Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Dev\Application\msedge.exe")
+  let canary = FileInfo <| Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Edge SxS\Application\msedge.exe")
+  
+  let inline get_version_info (file: FileInfo) = FileVersionInfo.GetVersionInfo file.FullName
+  let inline get_version (file: FileInfo) = (get_version_info file).ProductVersion
 
   let platform =
     if OperatingSystem.IsWindows() then Platform.Windows

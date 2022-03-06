@@ -13,19 +13,15 @@ open System
 open System.IO
 open OpenQA.Selenium
 open OpenQA.Selenium.Edge
+open Trunk
 
 [<AutoOpen>]
 module Edge =
 
-  let private stable = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge\Application\msedge.exe")
-  let private beta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Beta\Application\msedge.exe")
-  let private dev = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Dev\Application\msedge.exe")
-  let private canary = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Edge SxS\Application\msedge.exe")
-  
   /// <summary>
   /// </summary>
   type EdgeOptionsBuilder () =
-    let option = EdgeOptions(BinaryLocation = stable)
+    let option = EdgeOptions(BinaryLocation = stable.FullName)
     member __.Yield(_) = option
     member __.Zero() = option
 
@@ -42,7 +38,7 @@ module Edge =
     /// </summary>
     [<CustomOperation("use_stable")>]
     member __.UseStable (options: EdgeOptions) =
-      options.BinaryLocation <- stable
+      options.BinaryLocation <- stable.FullName
       options
    
     /// <summary>
@@ -50,7 +46,7 @@ module Edge =
     /// </summary>
     [<CustomOperation("use_beta")>]
     member __.UseBeta (options: EdgeOptions) =
-      options.BinaryLocation <- beta
+      options.BinaryLocation <- beta.FullName
       options
       
     /// <summary>
@@ -58,7 +54,7 @@ module Edge =
     /// </summary>
     [<CustomOperation("use_dev")>]
     member __.UseDev (options: EdgeOptions) =
-      options.BinaryLocation <- dev
+      options.BinaryLocation <- dev.FullName
       options
       
     /// <summary>
@@ -66,7 +62,7 @@ module Edge =
     /// </summary>
     [<CustomOperation("use_canary")>]
     member __.UseCanary (options: EdgeOptions) =
-      options.BinaryLocation <- canary
+      options.BinaryLocation <- canary.FullName
       options
       
     /// <summary>

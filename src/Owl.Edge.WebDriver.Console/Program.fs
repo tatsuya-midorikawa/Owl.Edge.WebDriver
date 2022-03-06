@@ -3,9 +3,15 @@
 open Owl.Edge.WebDriver
 
 
-let task = Trunk.download "99.0.1150.30"
-System.Threading.Tasks.Task.WaitAll task
-printfn "done"
+Trunk.stable
+|> Trunk.get_version
+|> printfn "%s"
+
+
+
+//let task = Trunk.download "99.0.1150.30"
+//System.Threading.Tasks.Task.WaitAll task
+//printfn "done"
 
 
 
