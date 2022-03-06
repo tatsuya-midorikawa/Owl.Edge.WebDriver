@@ -7,6 +7,7 @@ open System.Net.Http
 open System.IO
 open System.Diagnostics
 open System.Text.RegularExpressions
+open System.Threading.Tasks
 
 module Trunk =
   [<Literal>]
@@ -108,8 +109,20 @@ module Trunk =
         use! stream = content.ReadAsStreamAsync()
         use filestream = new FileStream(saveAs, FileMode.Create, FileAccess.Write, FileShare.None)
         stream.CopyTo filestream
+        return FileInfo saveAs
+      else 
+        return raise (exn $"{Environment.OSVersion.Platform} is not supported.")
     }
 
   let inline download version =
     let file_name = Path.Combine(Directory.GetCurrentDirectory(), zip_name)
     downloadAs (file_name, version)
+
+  let inline unzip (zip: Task<FileInfo>) =
+    task {
+      let! file = zip
+      System.IO.Compression.ZipFile.ExtractToDirectory(file.FullName, file.DirectoryName)
+      return DirectoryInfo file.DirectoryName
+    }
+
+  let inline sync<'T> (task: Task<'T>) = task |> (Async.AwaitTask >> Async.RunSynchronously)
