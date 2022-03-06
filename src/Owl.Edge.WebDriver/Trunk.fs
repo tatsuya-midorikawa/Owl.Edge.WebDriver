@@ -40,6 +40,7 @@ module Trunk =
     | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge\Application\msedge.exe") |> FileInfo :> FileSystemInfo
     | Platform.Mac -> "/Applications/Microsoft Edge.app" |> DirectoryInfo :> FileSystemInfo
     | _ -> raise (exn $"{platform} is not supported.")
+
   [<System.Runtime.Versioning.SupportedOSPlatform("Windows")>]
   [<System.Runtime.Versioning.SupportedOSPlatform("MacCatalyst")>]
   let beta : FileSystemInfo = 
@@ -47,6 +48,7 @@ module Trunk =
     | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Beta\Application\msedge.exe") |> FileInfo :> FileSystemInfo
     | Platform.Mac -> "/Applications/Microsoft Edge Beta.app" |> DirectoryInfo :> FileSystemInfo
     | _ -> raise (exn $"{platform} is not supported.")
+
   [<System.Runtime.Versioning.SupportedOSPlatform("Windows")>]
   [<System.Runtime.Versioning.SupportedOSPlatform("MacCatalyst")>]
   let dev : FileSystemInfo =
@@ -54,6 +56,7 @@ module Trunk =
     | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Dev\Application\msedge.exe") |> FileInfo :> FileSystemInfo
     | Platform.Mac -> "/Applications/Microsoft Edge Dev.app" |> DirectoryInfo :> FileSystemInfo
     | _ -> raise (exn $"{platform} is not supported.")
+
   [<System.Runtime.Versioning.SupportedOSPlatform("Windows")>]
   [<System.Runtime.Versioning.SupportedOSPlatform("MacCatalyst")>]
   let canary =
