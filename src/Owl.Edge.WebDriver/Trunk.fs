@@ -13,14 +13,6 @@ module Trunk =
   type Platform = None = -1 | Windows = 0 | Mac = 1 | Linux = 2
   type Architecture = None = -1 | x86 = 0 | x64 = 1 | ARM = 2
 
-  let stable = FileInfo <| Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge\Application\msedge.exe")
-  let beta = FileInfo <| Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Beta\Application\msedge.exe")
-  let dev = FileInfo <| Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Dev\Application\msedge.exe")
-  let canary = FileInfo <| Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Edge SxS\Application\msedge.exe")
-  
-  let inline get_version_info (file: FileInfo) = FileVersionInfo.GetVersionInfo file.FullName
-  let inline get_version (file: FileInfo) = (get_version_info file).ProductVersion
-
   let platform =
     if OperatingSystem.IsWindows() then Platform.Windows
     else if OperatingSystem.IsMacOS() then Platform.Mac
@@ -33,6 +25,38 @@ module Trunk =
     else if Intrinsics.Arm.ArmBase.Arm64.IsSupported then Architecture.ARM
     else Architecture.None
     
+  let stable =
+    match platform with
+    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge\Application\msedge.exe")
+    // TODO
+    | Platform.Mac -> "/Applications/msedge"
+    | _ -> raise (exn $"{platform} is not supported.")
+    |> FileInfo
+  let beta = 
+    match platform with
+    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Beta\Application\msedge.exe")
+    // TODO
+    | Platform.Mac -> "/Applications/msedge"
+    | _ -> raise (exn $"{platform} is not supported.")
+    |> FileInfo
+  let dev =
+    match platform with
+    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Dev\Application\msedge.exe")
+    // TODO
+    | Platform.Mac -> "/Applications/msedge"
+    | _ -> raise (exn $"{platform} is not supported.")
+    |> FileInfo
+  let canary =
+    match platform with
+    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Edge SxS\Application\msedge.exe")
+    // TODO
+    | Platform.Mac -> "/Applications/msedge"
+    | _ -> raise (exn $"{platform} is not supported.")
+    |> FileInfo
+  
+  let inline get_version_info (file: FileInfo) = FileVersionInfo.GetVersionInfo file.FullName
+  let inline get_version (file: FileInfo) = (get_version_info file).ProductVersion
+
   let inline get_x64_driver_url version = sprintf $"https://msedgedriver.azureedge.net/%s{version}/edgedriver_win64.zip"
   let inline get_x86_driver_url version = sprintf $"https://msedgedriver.azureedge.net/%s{version}/edgedriver_win32.zip"
   let inline get_linux_driver_url version = sprintf $"https://msedgedriver.azureedge.net/%s{version}/edgedriver_linux64.zip"
@@ -46,7 +70,7 @@ module Trunk =
     | (Platform.Windows, Architecture.ARM) -> "edgedriver_arm64.zip"
     | (Platform.Mac, _) -> "edgedriver_mac64.zip"
     | (Platform.Linux, _) -> "edgedriver_linux64.zip"
-    | _ -> raise (exn $"{Environment.OSVersion.Platform} is not supported.")
+    | _ -> raise (exn $"{platform} ({architecture}) is not supported.")
 
   let inline downloadAs (saveAs, version) =
     let url =
