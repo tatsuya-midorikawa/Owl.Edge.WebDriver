@@ -125,4 +125,10 @@ module Trunk =
       return DirectoryInfo file.DirectoryName
     }
 
+  let inline remove (zip: Task<FileInfo>) =
+    task {
+      let! file = zip
+      file.Delete()
+    }
+
   let inline sync<'T> (task: Task<'T>) = task |> (Async.AwaitTask >> Async.RunSynchronously)
