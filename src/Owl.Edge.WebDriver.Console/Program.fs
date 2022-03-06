@@ -1,12 +1,18 @@
 ﻿//open OpenQA.Selenium
 
 open Owl.Edge.WebDriver
+open System.Threading.Tasks
 open System.Text.RegularExpressions
 
+Trunk.stable |> Trunk.get_version |> printfn "%s"
+Trunk.beta |> Trunk.get_version |> printfn "%s"
+Trunk.dev |> Trunk.get_version |> printfn "%s"
+Trunk.canary |> Trunk.get_version |> printfn "%s"
 
-Trunk.stable
-|> Trunk.get_version
-|> printfn "%s"
+// Trunk.stable
+// |> Trunk.get_version
+// |> Trunk.download
+// |> Task.WaitAll
 
 
 
