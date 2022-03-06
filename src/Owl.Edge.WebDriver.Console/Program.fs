@@ -16,8 +16,6 @@ Trunk.stable
 |> Trunk.sync
 |> printfn "%A"
 
-
-
 //let task = Trunk.download "99.0.1150.30"
 //System.Threading.Tasks.Task.WaitAll task
 //printfn "done"

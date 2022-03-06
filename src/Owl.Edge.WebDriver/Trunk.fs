@@ -18,6 +18,9 @@ module Trunk =
   type Platform = None = -1 | Windows = 0 | Mac = 1 | Linux = 2
   type Architecture = None = -1 | x86 = 0 | x64 = 1 | ARM = 2
 
+  [<System.Runtime.Versioning.SupportedOSPlatform("Windows")>]
+  [<System.Runtime.Versioning.SupportedOSPlatform("MacCatalyst")>]
+  [<System.Runtime.Versioning.SupportedOSPlatform("Linux")>]
   let platform =
     if OperatingSystem.IsWindows() then Platform.Windows
     else if OperatingSystem.IsMacOS() then Platform.Mac
@@ -30,21 +33,29 @@ module Trunk =
     else if Intrinsics.Arm.ArmBase.Arm64.IsSupported then Architecture.ARM
     else Architecture.None
     
+  [<System.Runtime.Versioning.SupportedOSPlatform("Windows")>]
+  [<System.Runtime.Versioning.SupportedOSPlatform("MacCatalyst")>]
   let stable : FileSystemInfo =
     match platform with
     | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge\Application\msedge.exe") |> FileInfo :> FileSystemInfo
     | Platform.Mac -> "/Applications/Microsoft Edge.app" |> DirectoryInfo :> FileSystemInfo
     | _ -> raise (exn $"{platform} is not supported.")
+  [<System.Runtime.Versioning.SupportedOSPlatform("Windows")>]
+  [<System.Runtime.Versioning.SupportedOSPlatform("MacCatalyst")>]
   let beta : FileSystemInfo = 
     match platform with
     | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Beta\Application\msedge.exe") |> FileInfo :> FileSystemInfo
     | Platform.Mac -> "/Applications/Microsoft Edge Beta.app" |> DirectoryInfo :> FileSystemInfo
     | _ -> raise (exn $"{platform} is not supported.")
+  [<System.Runtime.Versioning.SupportedOSPlatform("Windows")>]
+  [<System.Runtime.Versioning.SupportedOSPlatform("MacCatalyst")>]
   let dev : FileSystemInfo =
     match platform with
     | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Dev\Application\msedge.exe") |> FileInfo :> FileSystemInfo
     | Platform.Mac -> "/Applications/Microsoft Edge Dev.app" |> DirectoryInfo :> FileSystemInfo
     | _ -> raise (exn $"{platform} is not supported.")
+  [<System.Runtime.Versioning.SupportedOSPlatform("Windows")>]
+  [<System.Runtime.Versioning.SupportedOSPlatform("MacCatalyst")>]
   let canary =
     match platform with
     | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Edge SxS\Application\msedge.exe") |> FileInfo :> FileSystemInfo
