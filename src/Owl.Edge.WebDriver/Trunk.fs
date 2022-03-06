@@ -6,8 +6,12 @@ open System.Net
 open System.Net.Http
 open System.IO
 open System.Diagnostics
+open System.Text.RegularExpressions
 
 module Trunk =
+  [<Literal>]
+  let pattern = "<string>(.*?)</string>"
+
   let client = new HttpClient()
 
   type Platform = None = -1 | Windows = 0 | Mac = 1 | Linux = 2
@@ -25,37 +29,52 @@ module Trunk =
     else if Intrinsics.Arm.ArmBase.Arm64.IsSupported then Architecture.ARM
     else Architecture.None
     
-  let stable =
+  let stable : FileSystemInfo =
     match platform with
-    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge\Application\msedge.exe")
-    // TODO
-    | Platform.Mac -> "/Applications/msedge"
+    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge\Application\msedge.exe") |> FileInfo :> FileSystemInfo
+    | Platform.Mac -> "/Applications/Microsoft Edge.app" |> DirectoryInfo :> FileSystemInfo
     | _ -> raise (exn $"{platform} is not supported.")
-    |> FileInfo
-  let beta = 
+  let beta : FileSystemInfo = 
     match platform with
-    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Beta\Application\msedge.exe")
-    // TODO
-    | Platform.Mac -> "/Applications/msedge"
+    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Beta\Application\msedge.exe") |> FileInfo :> FileSystemInfo
+    | Platform.Mac -> "/Applications/Microsoft Edge Beta.app" |> DirectoryInfo :> FileSystemInfo
     | _ -> raise (exn $"{platform} is not supported.")
-    |> FileInfo
-  let dev =
+  let dev : FileSystemInfo =
     match platform with
-    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Dev\Application\msedge.exe")
-    // TODO
-    | Platform.Mac -> "/Applications/msedge"
+    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"Microsoft\Edge Dev\Application\msedge.exe") |> FileInfo :> FileSystemInfo
+    | Platform.Mac -> "/Applications/Microsoft Edge Dev.app" |> DirectoryInfo :> FileSystemInfo
     | _ -> raise (exn $"{platform} is not supported.")
-    |> FileInfo
   let canary =
     match platform with
-    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Edge SxS\Application\msedge.exe")
-    // TODO
-    | Platform.Mac -> "/Applications/msedge"
+    | Platform.Windows -> Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Edge SxS\Application\msedge.exe") |> FileInfo :> FileSystemInfo
+    | Platform.Mac -> "/Applications/Microsoft Edge Canary.app" |> DirectoryInfo :> FileSystemInfo
     | _ -> raise (exn $"{platform} is not supported.")
-    |> FileInfo
   
-  let inline get_version_info (file: FileInfo) = FileVersionInfo.GetVersionInfo file.FullName
-  let inline get_version (file: FileInfo) = (get_version_info file).ProductVersion
+  [<System.Runtime.Versioning.SupportedOSPlatform("MacCatalyst")>]
+  let inline find_version (info: FileSystemInfo) =
+    let readLines = Path.Combine >> File.ReadLines >> (fun iter -> iter.GetEnumerator())
+    let e = [| info.FullName; "Contents/info.plist" |] |> readLines
+    let mutable is_break = false
+    let mutable found = false
+    let mutable version = ""
+    while not is_break && e.MoveNext() do
+      if e.Current.Contains "CFBundleShortVersionString" then found <- true
+      else if found then
+        version <- Regex.Match(e.Current, pattern).Groups[1] |> string
+        is_break <- true
+      else
+        ()
+    if System.String.IsNullOrEmpty version
+    then raise (exn $"Version information is not found.")
+    else version
+    
+  [<System.Runtime.Versioning.SupportedOSPlatform("Windows")>]
+  [<System.Runtime.Versioning.SupportedOSPlatform("MacCatalyst")>]
+  let inline get_version (info: FileSystemInfo) =
+    match platform with
+    | Platform.Windows -> (FileVersionInfo.GetVersionInfo info.FullName).ProductVersion
+    | Platform.Mac -> find_version info
+    | _ -> raise (exn $"{platform} is not supported.")
 
   let inline get_x64_driver_url version = sprintf $"https://msedgedriver.azureedge.net/%s{version}/edgedriver_win64.zip"
   let inline get_x86_driver_url version = sprintf $"https://msedgedriver.azureedge.net/%s{version}/edgedriver_win32.zip"

@@ -1,6 +1,7 @@
 ﻿//open OpenQA.Selenium
 
 open Owl.Edge.WebDriver
+open System.Text.RegularExpressions
 
 
 Trunk.stable
