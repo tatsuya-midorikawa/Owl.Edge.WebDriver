@@ -9,12 +9,12 @@ open System.Text.RegularExpressions
 //Trunk.dev |> Trunk.get_version |> printfn "%s"
 //Trunk.canary |> Trunk.get_version |> printfn "%s"
 
-Trunk.stable
-|> Trunk.get_version
-|> Trunk.download
-|> Trunk.unzip
-|> Trunk.sync
-|> printfn "%A"
+//Trunk.stable
+//|> Trunk.get_version
+//|> Trunk.download
+//|> Trunk.unzip
+//|> Trunk.sync
+//|> printfn "%A"
 
 //let task = Trunk.download "99.0.1150.30"
 //System.Threading.Tasks.Task.WaitAll task
@@ -26,32 +26,36 @@ Trunk.stable
 //let options =
 //  options {
 //    // Beta チャネルを使う
-//    use_beta
+//    set beta
 //    // app-mode を使う
-//    use_app_mode "https://www.microsoft.com"
+//    set (app_mode "https://www.microsoft.com")
 //  }
 
-//let driver =
-//  edge options {
+let options = options { set beta; set (app_mode "https://www.microsoft.com"); }
 
-//    navigate "https://www.bing.com/"
+let driver_dir = @"C:\tools"
 
-//    execute "alert(arguments[0])" "sample text" into result
-//    get_element_by_id "sb_form_q" into e
+let driver =
+  edge (options, driver_dir) {
 
-//    element e {
-//      input "test"
-//      submit
-//    } |> ignore
+    navigate "https://www.bing.com/"
 
-//    page_source into html
-//    printfn $"%s{html}"
+    //execute "alert(arguments[0])" "sample text" into result
+    get_element_by_id "sb_form_q" into e
 
-//    //try'element (elements |> try'first) {
-//    //  input "test"
-//    //  submit
-//    //}
-//  }
+    element e {
+      input "test"
+      submit
+    } |> ignore
+
+    page_source into html
+    printfn $"%s{html}"
+
+    //try'element (elements |> try'first) {
+    //  input "test"
+    //  submit
+    //}
+  }
 
 
 //let driver_dir = @"C:\tools\driver"

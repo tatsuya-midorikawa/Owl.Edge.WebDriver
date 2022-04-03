@@ -13,61 +13,98 @@ open System
 open System.IO
 open OpenQA.Selenium
 open OpenQA.Selenium.Edge
-open Trunk
+//open Trunk
 
 [<AutoOpen>]
 module Edge =
+  type EdgeBinary = EdgeBinary of location: string
+  let stable = EdgeBinary Trunk.stable.FullName
+  let beta = EdgeBinary Trunk.beta.FullName
+  let dev = EdgeBinary Trunk.dev.FullName
+  let canary = EdgeBinary Trunk.canary.FullName
+  let inline bin location = EdgeBinary location
+
+  type EdgeMode =
+    | AppMode of url: string
+    | Headless
+
+  let inline app_mode url = AppMode url
+  let headless = Headless
 
   /// <summary>
   /// </summary>
   type EdgeOptionsBuilder () =
-    let option = EdgeOptions(BinaryLocation = stable.FullName)
+    let option = EdgeOptions(BinaryLocation = Trunk.stable.FullName)
     member __.Yield(_) = option
     member __.Zero() = option
-
+    
     /// <summary>
-    /// 利用する msedge.exe を直接指定する.
+    /// 利用する msedge.exe を指定する.
     /// </summary>
-    [<CustomOperation("binary")>]
-    member __.BinaryLocation (options: EdgeOptions, location: string) =
+    [<CustomOperation("set")>]
+    member __.Set (options: EdgeOptions, EdgeBinary location) = 
       options.BinaryLocation <- location
       options
     
     /// <summary>
+    /// Edge 起動時のモードを設定する.
+    /// </summary>
+    [<CustomOperation("set")>]
+    member __.Set (options: EdgeOptions, mode: EdgeMode) =
+      match mode with
+      | AppMode url -> options.AddArgument $"app=%s{url}"
+      | Headless -> options.AddArgument $"headless"
+      options
+
+    /// <summary>
+    /// 利用する msedge.exe を直接指定する.
+    /// </summary>
+    [<Obsolete>]
+    [<CustomOperation("binary")>]
+    member __.BinaryLocation (options: EdgeOptions, location: string) =
+      options.BinaryLocation <- location
+      options
+
+    /// <summary>
     /// 既定のインストール先にインストールされている, Stable チャネルの msedge.exe を利用する.
     /// </summary>
+    [<Obsolete>]
     [<CustomOperation("use_stable")>]
     member __.UseStable (options: EdgeOptions) =
-      options.BinaryLocation <- stable.FullName
+      options.BinaryLocation <- Trunk.stable.FullName
       options
    
     /// <summary>
     /// 既定のインストール先にインストールされている, Beta チャネルの msedge.exe を利用する.
     /// </summary>
+    [<Obsolete>]
     [<CustomOperation("use_beta")>]
     member __.UseBeta (options: EdgeOptions) =
-      options.BinaryLocation <- beta.FullName
+      options.BinaryLocation <- Trunk.beta.FullName
       options
       
     /// <summary>
     /// 既定のインストール先にインストールされている, Dev チャネルの msedge.exe を利用する.
     /// </summary>
+    [<Obsolete>]
     [<CustomOperation("use_dev")>]
     member __.UseDev (options: EdgeOptions) =
-      options.BinaryLocation <- dev.FullName
+      options.BinaryLocation <- Trunk.dev.FullName
       options
       
     /// <summary>
     /// 既定のインストール先にインストールされている, Cahary チャネルの msedge.exe を利用する.
     /// </summary>
+    [<Obsolete>]
     [<CustomOperation("use_canary")>]
     member __.UseCanary (options: EdgeOptions) =
-      options.BinaryLocation <- canary.FullName
+      options.BinaryLocation <- Trunk.canary.FullName
       options
       
     /// <summary>
     /// 指定した URL を app-mode で起動する.
     /// </summary>
+    [<Obsolete>]
     [<CustomOperation("use_app_mode")>]
     member __.AppMode (options: EdgeOptions, url: string) =
       options.AddArgument $"app=%s{url}"
@@ -76,6 +113,7 @@ module Edge =
     /// <summary>
     /// msedge.exe を headless-mode で起動する.
     /// </summary>
+    [<Obsolete>]
     [<CustomOperation("use_headless")>]
     member __.Headless (options: EdgeOptions) =
       options.AddArgument $"headless"
@@ -104,8 +142,6 @@ module Edge =
     member __.AddAdditionalEdgeOption (options: EdgeOptions, name: string, value: string) =
       options.AddAdditionalEdgeOption(name, value)
       options
-
-
       
   /// <summary>
   /// </summary>
@@ -203,8 +239,6 @@ module Edge =
       driver.Quit()
       let e = driver.FindElement (By.Id id)
       ()
-
-      
 
   /// <summary>
   /// </summary>
@@ -338,9 +372,9 @@ module Edge =
   
 
   let options = EdgeOptionsBuilder()
-  let inline edge options = EdgeDriverBuilder options
-  let inline edge' options driverDirectory url = EdgeDriverBuilder (options, driverDir= driverDirectory,url= url)
-  let inline edge'with options driverDirectory = EdgeDriverBuilder (options, driverDir= driverDirectory)
+  let inline edge (options, driverDirectory) = EdgeDriverBuilder (options, driverDir= driverDirectory)
+  let inline edge' options = EdgeDriverBuilder options
+  let inline edge'' options driverDirectory url = EdgeDriverBuilder (options, driverDir= driverDirectory, url= url)
   let inline edge'at options url = EdgeDriverBuilder (options, url= url)
   let inline element e = WebElementBuilder e
   let inline try'element e = OptionWebElementBuilder e
