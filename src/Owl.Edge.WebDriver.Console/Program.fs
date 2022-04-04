@@ -22,16 +22,18 @@ open System.Text.RegularExpressions
 
 
 
-//// 既定では Stable チャネルを使います.
-//let options =
-//  options {
-//    // Beta チャネルを使う
-//    set beta
-//    // app-mode を使う
-//    set (app_mode "https://www.microsoft.com")
-//  }
+// 既定では Stable チャネルを使います.
+let options =
+  options {
+    // Beta チャネルを使う
+    set beta
+    // app-mode を使う
+    set (app_mode "https://www.microsoft.com")
+    // Headless モードで起動する
+    set headless
+  }
 
-let options = options { set beta; set (app_mode "https://www.microsoft.com"); }
+//let options = options { set beta; set (app_mode "https://www.microsoft.com"); }
 
 let driver_dir = @"C:\tools"
 
